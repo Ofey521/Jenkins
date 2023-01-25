@@ -1,23 +1,18 @@
+import groovy.io.FileType
+
 pipeline{
     agent{
-        label "s08"
+        label 's08'
     }
     stages{
         stage("Sprawdź co jest w folderze"){
+            agent { label 's08' }
             steps{
-                dir("/mnt/db"){
-                    sh "ls -lh"
-                }
-            }
-            post{
-                always{
-                    echo "========always========"
-                }
-                success{
-                    echo "========A executed successfully========"
-                }
-                failure{
-                    echo "========A execution failed========"
+                script {
+                    //sh "if [ -d /mnt/db ]; then ls /mnt/db; fi > commandResult"
+                    sh "ls /mnt/db > list_database "
+                    result = readFile('list_database').trim()
+                    println result
                 }
             }
         }
