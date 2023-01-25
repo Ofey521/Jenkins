@@ -1,11 +1,13 @@
 pipeline{
     agent{
-        label "linux"
+        label "s08"
     }
     stages{
-        stage("A"){
+        stage("Sprawdź co jest w folderze"){
             steps{
-                echo "========executing A========"
+                dir("/mnt/db"){
+                    sh "ls -lh"
+                }
             }
             post{
                 always{
