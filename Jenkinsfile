@@ -2,6 +2,9 @@ pipeline{
     agent{
         label "ansible"
     }
+    environment {
+        ansible_private_key=credentials('ansible-priv')
+    }
     stages{
         stage("Sprawdź wersję ansibla"){
             steps{
@@ -10,16 +13,11 @@ pipeline{
                 '''
             }
         }
-        stage("A"){
+        stage("Gather factsy"){
             steps{
-                dir('/home/ansible'){
-                    sh '''
-                        ansible linux -m gather_facts
-                    '''
-                }
+                sh 'ansible -i /home/ansible --private-key=$ansible_private_key linux -m gather_facts'
             }
 
         }
     }
-
 }
