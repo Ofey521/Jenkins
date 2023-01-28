@@ -14,6 +14,13 @@ pipeline{
                 '''
             }
         }
+        stage('Check ws'){
+            steps{
+                dir('ansible'){
+                    sh 'ls -lh'
+                }
+            }
+        }
 
         stage('Pull') {
             steps {
@@ -33,6 +40,12 @@ pipeline{
             steps{
                 ansiblePlaybook(credentialsId: '$ansible_private_key', inventory: '/home/ansible', playbook: '/home/ansible/ping.yml')
             }
+        }
+    }
+
+    post{
+        always{
+            cleanWs()
         }
     }
 }
