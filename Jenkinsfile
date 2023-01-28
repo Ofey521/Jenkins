@@ -10,7 +10,7 @@ pipeline{
     environment {
         ansible_private_key=credentials('ansible-priv')
     }
-    
+
     stages{
         stage('Pull') {
             steps {
@@ -20,7 +20,7 @@ pipeline{
             }
         }
 
-        stage("tools config"){
+        stage("Update & Install basic tool"){
             steps{
                 dir('ansible'){
                     ansiblePlaybook(credentialsId: '$ansible_private_key', vaultCredentialsId: 'ansible_vault_key', inventory: 'inventory', playbook: 'tools_config.yml', colorized: true, limit: params.INVENTORY)
