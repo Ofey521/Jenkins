@@ -18,7 +18,7 @@ pipeline{
         stage("Gather factsy z pluginu"){
             steps{
                 dir('ansible'){
-                    ansiblePlaybook(credentialsId: '$ansible_private_key', vaultCredentialsId: 'ansible_vault_key', inventory: 'inventory', playbook: 'tools_config.yml')
+                    ansiblePlaybook(credentialsId: '$ansible_private_key', vaultCredentialsId: 'ansible_vault_key', inventory: 'inventory', playbook: 'tools_config.yml', colorized: true, limit: 'test')
                 }
             }
         }
