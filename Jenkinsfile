@@ -3,6 +3,10 @@ pipeline{
         label "ansible"
     }
 
+    options{
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
     parameters{
         string(name: "INVENTORY", defaultValue: "", description: "Którą grupę inventory chcesz zaktualizować?")
     }
