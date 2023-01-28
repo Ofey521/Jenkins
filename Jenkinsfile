@@ -2,10 +2,15 @@ pipeline{
     agent{
         label "ansible"
     }
+
+    parameters{
+        string(name: "INVENTORY", defaultValue: "", description: "Którą grupę inventory chcesz zaktualizować?")
+    }
+
     environment {
         ansible_private_key=credentials('ansible-priv')
-        ofey=credentials('ofey_pass')
     }
+    
     stages{
         stage('Pull') {
             steps {
@@ -18,7 +23,7 @@ pipeline{
         stage("tools config"){
             steps{
                 dir('ansible'){
-                    ansiblePlaybook(credentialsId: '$ansible_private_key', vaultCredentialsId: 'ansible_vault_key', inventory: 'inventory', playbook: 'tools_config.yml', colorized: true, limit: 'test')
+                    ansiblePlaybook(credentialsId: '$ansible_private_key', vaultCredentialsId: 'ansible_vault_key', inventory: 'inventory', playbook: 'tools_config.yml', colorized: true, limit: params.INVENTORY)
                 }
             }
         }
