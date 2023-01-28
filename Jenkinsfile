@@ -7,21 +7,6 @@ pipeline{
         ofey=credentials('ofey_pass')
     }
     stages{
-        stage("Sprawdź wersję ansibla"){
-            steps{
-                sh ''' 
-                    ansible --version
-                '''
-            }
-        }
-        stage('Check ws'){
-            steps{
-                dir('ansible'){
-                    sh 'ls -lh'
-                }
-            }
-        }
-
         stage('Pull') {
             steps {
                 dir('ansible'){
@@ -30,15 +15,11 @@ pipeline{
             }
         }
 
-        stage("Gather factsy"){
-            steps{
-                sh 'ansible -i /home/ansible --private-key=$ansible_private_key linux -m gather_facts'
-            }
-        }
-
         stage("Gather factsy z pluginu"){
             steps{
-                ansiblePlaybook(credentialsId: '$ansible_private_key', inventory: '/home/ansible', playbook: '/home/ansible/ping.yml')
+                dir('ansible'){
+                    ansiblePlaybook(credentialsId: '$ansible_private_key', vaultCredentialsId: 'ansible_vault_key', inventory: 'inventory', playbook: 'tools_config.yml')
+                }
             }
         }
     }
