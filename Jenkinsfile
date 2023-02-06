@@ -5,6 +5,10 @@ pipeline{
     agent{
         label 's08'
     }
+    parameters {
+        string(name: 'path', description: 'path to database')
+        string(name: 'version', description: 'version of program')
+    }
     stages{
         stage("To jest step dla wersji 5.4"){
             steps{
@@ -14,7 +18,7 @@ pipeline{
         stage("Pobranie zewnętrznej konfiguracji"){
             steps{
                 script{
-                    config()
+                    config(path: "/home/sente")
                 }
             }
         }
