@@ -5,15 +5,9 @@ pipeline{
         label 's08'
     }
     stages{
-        stage("Sprawdź co jest w folderze"){
-            agent { label 's08' }
+        stage("To jest step dla wersji 5.5"){
             steps{
-                script {
-                    //sh "if [ -d /mnt/db ]; then ls /mnt/db; fi > commandResult"
-                    sh "ls /mnt/db > list_database "
-                    result = readFile('list_database').trim()
-                    println result
-                }
+                echo "5.5"
             }
         }
     }
