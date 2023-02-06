@@ -14,9 +14,7 @@ pipeline{
         stage("Pobranie zewnętrznej konfiguracji"){
             steps{
                 script{
-                    configData = readYaml file: "jenkins_env_conf.yml"
-                    path = configData.path
-                    echo "$path"
+                    config()
                 }
             }
         }
