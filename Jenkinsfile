@@ -7,18 +7,30 @@ pipeline{
     }
     parameters {
         string(name: 'path', description: 'path to database')
-        string(name: 'version', description: 'version of program')
+        string(name: 'ver', description: 'version of program')
     }
     stages{
         stage("To jest step dla wersji 5.4"){
             steps{
                 echo "5.4"
+                echo "${params.ver}"
+                echo "${params.path}"
             }
         }
         stage("Pobranie zewnętrznej konfiguracji"){
             steps{
                 script{
-                    config(path: "/home/sente")
+                    def result = config(path: "${params.path}", version: "${params.ver}")
+                    path = "${result.path}"
+                    ver = "${result.version}"
+                }
+            }
+        }
+        stage("Poka parametry"){
+            steps{
+                script{
+                    echo "${path}"
+                    echo "${ver}"
                 }
             }
         }
