@@ -6,7 +6,6 @@ pipeline{
         label 's07'
     }
     parameters {
-        string(name: 'path', description: 'path to database')
         string(name: 'ver', description: 'version of program')
         string(name: 'nVersion', description: 'nVersion', trim: true)
     }
@@ -18,13 +17,12 @@ pipeline{
             steps{
                 echo "5.4"
                 echo "${params.ver}"
-                echo "${params.path}"
             }
         }
         stage("Pobranie zewnętrznej konfiguracji"){
             steps{
                 script{
-                    def result = config(path: "${params.path}", version: "${params.ver}", nVersion: "${params.nVersion}")
+                    def result = config(version: "${params.ver}", nVersion: "${params.nVersion}")
                     path = "${result.path}"
                     ver = "${result.version}"
                     nVersion = "${result.nVersion}"
