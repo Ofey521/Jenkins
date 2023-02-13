@@ -24,10 +24,11 @@ pipeline{
         stage("Pobranie zewnętrznej konfiguracji"){
             steps{
                 script{
-                    nVersion = "${params.nVersion}"
-                    def result = config(path: "${params.path}", version: "${params.ver}")
+                    def result = config(path: "${params.path}", version: "${params.ver}", nVersion: "${params.nVersion}")
                     path = "${result.path}"
                     ver = "${result.version}"
+                    nVersion = "${result.nVersion}"
+                    if(nVersion == null) error 'nVersion not found in jenkins_env_conf'
                 }
             }
         }
