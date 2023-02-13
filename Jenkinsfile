@@ -3,7 +3,7 @@ import groovy.io.FileType
 
 pipeline{
     agent{
-        label 'linux'
+        label 's07'
     }
     parameters {
         string(name: 'path', description: 'path to database')
@@ -36,6 +36,7 @@ pipeline{
                 script{
                     echo "${path}"
                     echo "${ver}"
+                    echo "${nVersion}"
                 }
             }
         }
