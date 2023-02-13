@@ -28,7 +28,6 @@ pipeline{
                     path = "${result.path}"
                     ver = "${result.version}"
                     nVersion = "${result.nVersion}"
-                    if(nVersion == null) error 'nVersion not found in jenkins_env_conf'
                 }
             }
         }
