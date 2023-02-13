@@ -3,7 +3,7 @@ import groovy.io.FileType
 
 pipeline{
     agent{
-        label 's08'
+        label 'linux'
     }
     parameters {
         string(name: 'path', description: 'path to database')
