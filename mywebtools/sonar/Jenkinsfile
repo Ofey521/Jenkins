@@ -1,0 +1,38 @@
+pipeline {
+    agent {label 'builder'}
+
+    stages {
+        stage('Pull') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/sonar']], doGenerateSubmoduleConfigurations: false,
+                    extensions: [[$class: 'SubmoduleOption',
+                        disableSubmodules: false,
+                        parentCredentials: false,
+                        recursiveSubmodules: true,
+                        reference: '',
+                        trackingSubmodules: false]], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[url: 'git@gitlab.com:ArekPatynowski/mywebtools.git']]])
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sq') {
+                    script {
+                        def scannerHome = tool 'SonarScanner for MSBuild'     
+                        sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:\"arkowe\" /d:sonar.host.url=\"https://sonar.januszex.trade\" /d:sonar.login=\"sqp_088d67ccc3edff8356c88304cd34c13b6375a577\""
+                        sh "dotnet build"
+                        sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end /d:sonar.login=\"sqp_088d67ccc3edff8356c88304cd34c13b6375a577\""
+                    }
+                }
+            }
+        }        
+    }
+    
+    post {
+      always {
+        cleanWs()
+      }
+    }
+}
