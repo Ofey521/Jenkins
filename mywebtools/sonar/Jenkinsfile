@@ -17,13 +17,18 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
+            environment {
+                sonarQubeToken = credentials('jenkins-sonar')
+            }
+
             steps {
                 withSonarQubeEnv('sq') {
                     script {
                         def scannerHome = tool 'SonarScanner for MSBuild'     
-                        sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:\"arkowe\" /d:sonar.host.url=\"https://sonar.januszex.trade\" /d:sonar.login=\"sqp_088d67ccc3edff8356c88304cd34c13b6375a577\""
+                        sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:\"arkowe\" /d:sonar.host.url=\"https://sonar.januszex.trade\" /d:sonar.token=${sonarQubeToken}"
                         sh "dotnet build"
-                        sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end /d:sonar.login=\"sqp_088d67ccc3edff8356c88304cd34c13b6375a577\""
+                        sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end /d:sonar.token=${sonarQubeToken}"
+                        
                     }
                 }
             }
