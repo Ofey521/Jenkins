@@ -18,7 +18,7 @@ pipeline {
         
         stage('cp env'){
             steps{
-                sh 'cp /mnt/config/.env.dev .'
+                sh 'cp /mnt/config/.env.test .'
             }
         }
 
