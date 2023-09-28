@@ -16,6 +16,12 @@ pipeline {
             }
         }
         
+        stage('cp env'){
+            steps{
+                sh 'cp /mnt/config/.env.dev .'
+            }
+        }
+
         stage('build'){
             steps{
                 sh 'docker compose up --build --detach'
